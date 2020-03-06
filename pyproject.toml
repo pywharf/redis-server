@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "redis-server"
+version = "0.1.0"
+description = ""
+license = "MIT"
+authors = ["huntzhan <huntzhan.dev@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/private-pypi/redis-server"
+keywords = ["redis", "server"]
+include ["redis_server/bin/*"]
+
+[tool.poetry.dependencies]
+python = "^3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
