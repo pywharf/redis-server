@@ -43,15 +43,25 @@ jobs:
       with:
         name: checkout
         path: .
+
+    - name: Setup python/pip/poetry
+      run: |
+        rm -f /usr/bin/python
+        update-alternatives --install /usr/bin/python python $PYTHON_EXEC 0
+        python --version
+
+        rm -f /usr/bin/pip
+        update-alternatives --install /usr/bin/pip pip $PIP_EXEC 0
+        pip --version
+
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+        update-alternatives --install /usr/bin/poetry poetry $HOME/.poetry/bin/poetry 0
+
     - name: Fix +x permission
       run: find tools/ -type f -iname "*.sh" -exec chmod +x {} \;
+
     - name: Build redis
       run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
-    - name: debug
-      run: |
-        ls -alh
-        
-        $PYTHON_EXEC --version
-        $PIP_EXEC --version
-        
-        echo $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
+
+    - name: Build distribution
+      run: tools/distrib.sh $(pwd) ${{ matrix.redis_version }} $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
