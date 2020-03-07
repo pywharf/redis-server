@@ -7,13 +7,15 @@ jobs:
  build:
   strategy:
     matrix:
-      os:
+      image:
         - "quay.io/pypa/manylinux1_x86_64"
         - "quay.io/pypa/manylinux1_i686"
       redis_version:
         - "5.0.7"
         - "5.0.6"
-  runs-on: ${{ matrix.os }}
+  runs-on: ubuntu-latest
+  container:
+    image: ${{ matrix.image }}
   steps:
     - uses: actions/checkout@v2
     - name: debug
