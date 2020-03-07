@@ -15,7 +15,7 @@ jobs:
         name: checkout
         path: .
 
- build:
+ build-linux:
   needs: checkout
   runs-on: ubuntu-latest
   strategy:
@@ -23,6 +23,8 @@ jobs:
       image:
         - "quay.io/pypa/manylinux1_x86_64"
         - "quay.io/pypa/manylinux1_i686"
+        - "quay.io/pypa/manylinux2010_x86_64"
+        - "quay.io/pypa/manylinux2010_i686"
       python_abi:
         - "cp35-cp35m"
         - "cp36-cp36m"
@@ -74,9 +76,52 @@ jobs:
       with:
         name: distribution
         path: dist/
+ 
+ build-macos:
+  needs: checkout
+  runs-on: macos-10.15
+  strategy:
+    matrix:
+      redis_version:
+        - "5.0.7"
+  steps:
+    - name: Download checkout
+      uses: actions/download-artifact@v1
+      with:
+        name: checkout
+        path: .
+
+    - name: Fix +x permission
+      run: find tools/ -type f -iname "*.sh" -exec chmod +x {} \;
+
+    - name: Setup python
+      uses: actions/setup-python@v1
+
+    - name: Setup pip/poetry
+      run: |
+        pip install -U pip poetry
+        pip --version
+        poetry --version
+
+    - name: Build redis
+      run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
+    
+    - name: Build distribution
+      run: |
+        tools/distrib.sh \
+          $(pwd) \
+          ${{ matrix.redis_version }} \
+          py3-none \
+          macosx_10_15_x86_64
+    
+    - name: Upload distribution
+      uses: actions/upload-artifact@v1
+      with:
+        name: distribution
+        path: dist/
 
  publish:
-  needs: build
+  needs: [build-linux, build-macos]
   runs-on: ubuntu-latest
   steps:
     - name: Download distribution
