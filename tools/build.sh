@@ -1,14 +1,20 @@
 #!/bin/bash
+REDIS_VERSION=$1
+if [[ -z "$REDIS_VERSION" ]] ; then
+    echo "REDIS_VERSION not set."
+    exit 1
+fi
+echo "REDIS_VERSION=$REDIS_VERSION"
 
-BIN_FOLDER=$1
+BIN_FOLDER=$2
 if [[ -z "$BIN_FOLDER" ]] ; then
     echo "BIN_FOLDER not set."
     exit 1
 fi
+echo "BIN_FOLDER=$BIN_FOLDER"
 mkdir -p $BIN_FOLDER
 
 TMP_DIR=$(mktemp -d)
-REDIS_VERSION='5.0.7'
 
 # Download.
 REDIS_RELEASE_URL="http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz"
@@ -35,3 +41,6 @@ REDIS_CLI_EXEC="${REDIS_RELEASE_FOLDER}/src/redis-cli"
 $REDIS_CLI_EXEC --version
 echo "Copy $REDIS_CLI_EXEC to $BIN_FOLDER"
 cp $REDIS_CLI_EXEC $BIN_FOLDER
+
+# Cleanup
+rm -rf $TMP_DIR
