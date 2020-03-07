@@ -8,7 +8,7 @@ if [[ -z "$PKG_ROOT" ]] ; then
 fi
 echo "PKG_ROOT=$PKG_ROOT"
 
-REDIS_VERSION=$2
+REDIS_VERSION=${$2//-/}  # i.e. 6.0-rc2 => 6.0rc2
 if [[ -z "$REDIS_VERSION" ]] ; then
     echo "REDIS_VERSION not set."
     exit 1

@@ -32,6 +32,7 @@ jobs:
         - "cp38-cp38"
       redis_version:
         - "5.0.7"
+        - "6.0-rc2"
   container:
     image: ${{ matrix.image }}
   steps:
@@ -84,6 +85,7 @@ jobs:
     matrix:
       redis_version:
         - "5.0.7"
+        - "6.0-rc2"
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v1
