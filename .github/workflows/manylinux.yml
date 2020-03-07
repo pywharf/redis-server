@@ -1,0 +1,22 @@
+name: manylinux
+
+on:
+ push:
+
+jobs:
+ build:
+  strategy:
+    matrix:
+      os:
+        - "quay.io/pypa/manylinux1_x86_64"
+        - "quay.io/pypa/manylinux1_i686"
+      redis_version:
+        - "5.0.7"
+        - "5.0.6"
+  runs-on: ${{ matrix.os }}
+  steps:
+    - uses: actions/checkout@v2
+    - name: debug
+      run: |
+        echo ${{ matrix.os }} | awk -F'/' '{print $(NF)}'
+        echo ${{ matrix.redis_version }}
