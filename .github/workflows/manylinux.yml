@@ -9,12 +9,10 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
-    - name: debug
-      run: ls -alh
-    - name: Upload
+    - name: Upload checkout
       uses: actions/upload-artifact@v1
       with:
-        name: homework
+        name: checkout
         path: .
 
  build:
@@ -31,6 +29,10 @@ jobs:
   container:
     image: ${{ matrix.image }}
   steps:
+    - name: Download checkout
+      uses: actions/download-artifact@v1
+      with:
+        name: checkout
     - name: debug
       run: |
         ls -alh
