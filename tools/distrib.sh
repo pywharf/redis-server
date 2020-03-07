@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 PKG_ROOT=$1
 if [[ -z "$PKG_ROOT" ]] ; then
     echo "PKG_ROOT not set."

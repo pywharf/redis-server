@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 REDIS_VERSION=$1
 if [[ -z "$REDIS_VERSION" ]] ; then
     echo "REDIS_VERSION not set."
@@ -20,7 +22,7 @@ TMP_DIR=$(mktemp -d)
 REDIS_RELEASE_URL="http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz"
 REDIS_RELEASE_SAVE_PATH="${TMP_DIR}/redis.tar.gz"
 echo "Download $REDIS_RELEASE_URL and save to $REDIS_RELEASE_SAVE_PATH"
-wget -O $REDIS_RELEASE_SAVE_PATH $REDIS_RELEASE_URL
+curl --output $REDIS_RELEASE_SAVE_PATH $REDIS_RELEASE_URL
 
 # Decompress.
 REDIS_RELEASE_FOLDER="${TMP_DIR}/redis"
