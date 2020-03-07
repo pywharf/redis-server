@@ -33,8 +33,9 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: checkout
+        path: .
     - name: debug
       run: |
         ls -alh
-        echo $(echo ${{ matrix.os }} | awk -F'/' '{print $(NF)}')
+        echo $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
         echo ${{ matrix.redis_version }}
