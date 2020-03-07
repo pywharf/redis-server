@@ -31,7 +31,7 @@ echo "Decompress to $REDIS_RELEASE_FOLDER"
 tar -xzf $REDIS_RELEASE_SAVE_PATH -C $REDIS_RELEASE_FOLDER --strip-components=1
 
 # Compile.
-make -C $REDIS_RELEASE_FOLDER -j "$(nproc)" all
+make -C $REDIS_RELEASE_FOLDER -j 4 all
 
 # Save executables.
 REDIS_SERVER_EXEC="${REDIS_RELEASE_FOLDER}/src/redis-server"
