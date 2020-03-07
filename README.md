@@ -3,7 +3,7 @@
 To install the pre-compiled Redis binaries:
 
 ```sh
-pip install redis-server=<redis-version>
+pip install redis-server==<redis-version>
 ```
 
 Supported `redis-version`:
