@@ -8,11 +8,12 @@ if [[ -z "$PKG_ROOT" ]] ; then
 fi
 echo "PKG_ROOT=$PKG_ROOT"
 
-REDIS_VERSION=${$2//-/}  # i.e. 6.0-rc2 => 6.0rc2
-if [[ -z "$REDIS_VERSION" ]] ; then
-    echo "REDIS_VERSION not set."
+RAW_REDIS_VERSION=$2
+if [[ -z "$RAW_REDIS_VERSION" ]] ; then
+    echo "RAW_REDIS_VERSION not set."
     exit 1
 fi
+REDIS_VERSION=${RAW_REDIS_VERSION//-/}  # i.e. 6.0-rc2 => 6.0rc2
 echo "REDIS_VERSION=$REDIS_VERSION"
 
 PYTHON_ABI=$3
