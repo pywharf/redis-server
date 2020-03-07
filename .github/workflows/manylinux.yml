@@ -26,6 +26,12 @@ jobs:
       redis_version:
         - "5.0.7"
         - "5.0.6"
+      python_abi:
+        - "cp34-cp34m"
+        - "cp35-cp35m"
+        - "cp36-cp36m"
+        - "cp37-cp37m"
+        - "cp38-cp38"
   container:
     image: ${{ matrix.image }}
   steps:
@@ -37,5 +43,9 @@ jobs:
     - name: debug
       run: |
         ls -alh
+        
+        /opt/python/${{ matrix.python_abi }}/bin/pip --version
+        /opt/python/${{ matrix.python_abi }}/bin/python --version
+        
         echo $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
         echo ${{ matrix.redis_version }}
