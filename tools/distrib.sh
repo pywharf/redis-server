@@ -22,6 +22,9 @@ if [[ -z "$PLATFORM_TAG" ]] ; then
 fi
 echo "PLATFORM_TAG=$PLATFORM_TAG"
 
+python --version
+pip --version
+
 # Build with redis version.
 sed -i.bak 's/version = "0.1.0"/version = "'$REDIS_VERSION'"/g' "${PKG_ROOT}/pyproject.toml"
 cd $PKG_ROOT && poetry build -f wheel

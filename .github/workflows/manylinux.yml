@@ -55,9 +55,10 @@ jobs:
         pip install -U pip
         pip --version
         
-        pip install poetry
-        update-alternatives --install /usr/bin/poetry poetry /opt/python/${{ matrix.python_abi }}/bin/poetry 0
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+        update-alternatives --install /usr/bin/poetry poetry $HOME/.poetry/bin/poetry 0
         poetry --version
+        poetry config virtualenvs.create false
 
     - name: Build redis
       run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
