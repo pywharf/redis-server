@@ -9,9 +9,17 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
- 
+    - name: debug
+      run: ls -alh
+    - name: Upload
+      uses: actions/upload-artifact@v1
+      with:
+        name: homework
+        path: .
+
  build:
   needs: checkout
+  runs-on: ubuntu-latest
   strategy:
     matrix:
       image:
@@ -20,12 +28,11 @@ jobs:
       redis_version:
         - "5.0.7"
         - "5.0.6"
-  runs-on: ubuntu-latest
   container:
     image: ${{ matrix.image }}
   steps:
     - name: debug
       run: |
         ls -alh
-        echo ${{ matrix.os }} | awk -F'/' '{print $(NF)}'
+        echo $(echo ${{ matrix.os }} | awk -F'/' '{print $(NF)}')
         echo ${{ matrix.redis_version }}
