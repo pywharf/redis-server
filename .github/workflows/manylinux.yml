@@ -34,9 +34,6 @@ jobs:
         - "cp38-cp38"
   container:
     image: ${{ matrix.image }}
-  env:
-    PYTHON_EXEC: /opt/python/${{ matrix.python_abi }}/bin/python
-    PIP_EXEC: /opt/python/${{ matrix.python_abi }}/bin/pip
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v1
@@ -44,21 +41,23 @@ jobs:
         name: checkout
         path: .
 
+    - name: Fix +x permission
+      run: find tools/ -type f -iname "*.sh" -exec chmod +x {} \;
+
     - name: Setup python/pip/poetry
       run: |
         rm -f /usr/bin/python
-        update-alternatives --install /usr/bin/python python $PYTHON_EXEC 0
+        update-alternatives --install /usr/bin/python python /opt/python/${{ matrix.python_abi }}/bin/python 0
         python --version
 
         rm -f /usr/bin/pip
-        update-alternatives --install /usr/bin/pip pip $PIP_EXEC 0
+        update-alternatives --install /usr/bin/pip pip /opt/python/${{ matrix.python_abi }}/bin/pip 0
+        pip install -U pip
         pip --version
-
-        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-        update-alternatives --install /usr/bin/poetry poetry $HOME/.poetry/bin/poetry 0
-
-    - name: Fix +x permission
-      run: find tools/ -type f -iname "*.sh" -exec chmod +x {} \;
+        
+        pip install poetry
+        update-alternatives --install /usr/bin/poetry poetry /opt/python/${{ matrix.python_abi }}/bin/poetry 0
+        poetry --version
 
     - name: Build redis
       run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
