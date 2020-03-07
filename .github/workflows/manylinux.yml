@@ -4,7 +4,14 @@ on:
  push:
 
 jobs:
+ 
+ checkout:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+ 
  build:
+  needs: checkout
   strategy:
     matrix:
       image:
@@ -17,8 +24,8 @@ jobs:
   container:
     image: ${{ matrix.image }}
   steps:
-    - uses: actions/checkout@v2
     - name: debug
       run: |
+        ls -alh
         echo ${{ matrix.os }} | awk -F'/' '{print $(NF)}'
         echo ${{ matrix.redis_version }}
