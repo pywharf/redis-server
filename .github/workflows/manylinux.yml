@@ -43,6 +43,8 @@ jobs:
       with:
         name: checkout
         path: .
+    - name: Build redis
+      run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
     - name: debug
       run: |
         ls -alh
@@ -51,4 +53,3 @@ jobs:
         $PIP_EXEC --version
         
         echo $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
-        echo ${{ matrix.redis_version }}
