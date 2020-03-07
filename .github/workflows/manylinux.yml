@@ -34,6 +34,9 @@ jobs:
         - "cp38-cp38"
   container:
     image: ${{ matrix.image }}
+  env:
+    PYTHON_EXEC: /opt/python/${{ matrix.python_abi }}/bin/python
+    PIP_EXEC: /opt/python/${{ matrix.python_abi }}/bin/pip
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v1
@@ -44,8 +47,8 @@ jobs:
       run: |
         ls -alh
         
-        /opt/python/${{ matrix.python_abi }}/bin/pip --version
-        /opt/python/${{ matrix.python_abi }}/bin/python --version
+        $PYTHON_EXEC --version
+        $PIP_EXEC --version
         
         echo $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
         echo ${{ matrix.redis_version }}
