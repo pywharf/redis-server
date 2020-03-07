@@ -23,14 +23,14 @@ jobs:
       image:
         - "quay.io/pypa/manylinux1_x86_64"
         - "quay.io/pypa/manylinux1_i686"
-      redis_version:
-        - "5.0.7"
-        - "5.0.6"
       python_abi:
         - "cp35-cp35m"
         - "cp36-cp36m"
         - "cp37-cp37m"
         - "cp38-cp38"
+      redis_version:
+        - "5.0.7"
+        - "5.0.6"
   container:
     image: ${{ matrix.image }}
   steps:
@@ -63,7 +63,12 @@ jobs:
       run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
 
     - name: Build distribution
-      run: tools/distrib.sh $(pwd) ${{ matrix.redis_version }} $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
+      run: |
+        tools/distrib.sh \
+          $(pwd) \
+          ${{ matrix.redis_version }} \
+          ${{ matrix.python_abi }} \
+          $(echo ${{ matrix.image }} | awk -F'/' '{print $(NF)}')
 
     - name: Upload distribution
       uses: actions/upload-artifact@v1

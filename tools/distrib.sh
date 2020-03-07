@@ -15,7 +15,14 @@ if [[ -z "$REDIS_VERSION" ]] ; then
 fi
 echo "REDIS_VERSION=$REDIS_VERSION"
 
-PLATFORM_TAG=$3
+PYTHON_ABI=$3
+if [[ -z "$PYTHON_ABI" ]] ; then
+    echo "PYTHON_ABI not set."
+    exit 1
+fi
+echo "PYTHON_ABI=$PYTHON_ABI"
+
+PLATFORM_TAG=$4
 if [[ -z "$PLATFORM_TAG" ]] ; then
     echo "PLATFORM_TAG not set."
     exit 1
@@ -31,6 +38,6 @@ mv "${PKG_ROOT}/pyproject.toml.bak" "${PKG_ROOT}/pyproject.toml"
 POETRY_BUILT_WHL="${PKG_ROOT}/dist/redis_server-${REDIS_VERSION}-py3-none-any.whl"
 
 BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-RENAMED_WHL="${PKG_ROOT}/dist/redis_server-${REDIS_VERSION}-${BUILD_TAG}-py3-none-${PLATFORM_TAG}.whl"
+RENAMED_WHL="${PKG_ROOT}/dist/redis_server-${REDIS_VERSION}-${BUILD_TAG}-${PYTHON_ABI}-${PLATFORM_TAG}.whl"
 mv $POETRY_BUILT_WHL $RENAMED_WHL
 echo $RENAMED_WHL
