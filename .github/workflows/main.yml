@@ -1,4 +1,4 @@
-name: manylinux
+name: build-and-publish
 
 on:
  push:
@@ -30,7 +30,6 @@ jobs:
         - "cp38-cp38"
       redis_version:
         - "5.0.7"
-        - "5.0.6"
   container:
     image: ${{ matrix.image }}
   steps:
@@ -75,3 +74,29 @@ jobs:
       with:
         name: distribution
         path: dist/
+
+ publish:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Download distribution
+      uses: actions/download-artifact@v1
+      with:
+        name: distribution
+        path: dist/
+
+    - name: Setup python
+      uses: actions/setup-python@v1
+
+    - name: Setup pip/twine
+      run: |
+        pip install -U pip twine
+        pip --version
+        twine --version
+    
+    - name: Upload distributions
+      run: |
+        twine upload dist/*
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
