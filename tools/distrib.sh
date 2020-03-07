@@ -22,9 +22,6 @@ if [[ -z "$PLATFORM_TAG" ]] ; then
 fi
 echo "PLATFORM_TAG=$PLATFORM_TAG"
 
-python --version
-pip --version
-
 # Build with redis version.
 sed -i.bak 's/version = "0.1.0"/version = "'$REDIS_VERSION'"/g' "${PKG_ROOT}/pyproject.toml"
 cd $PKG_ROOT && poetry build -f wheel
@@ -36,3 +33,4 @@ POETRY_BUILT_WHL="${PKG_ROOT}/dist/redis_server-${REDIS_VERSION}-py3-none-any.wh
 BUILD_TAG=$(date -u "+%Y%m%d%H%M")
 RENAMED_WHL="${PKG_ROOT}/dist/redis_server-${REDIS_VERSION}-${BUILD_TAG}-py3-none-${PLATFORM_TAG}.whl"
 mv $POETRY_BUILT_WHL $RENAMED_WHL
+echo $RENAMED_WHL
