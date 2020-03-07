@@ -27,7 +27,6 @@ jobs:
         - "5.0.7"
         - "5.0.6"
       python_abi:
-        - "cp34-cp34m"
         - "cp35-cp35m"
         - "cp36-cp36m"
         - "cp37-cp37m"
