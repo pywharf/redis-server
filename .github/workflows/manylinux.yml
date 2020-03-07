@@ -43,6 +43,8 @@ jobs:
       with:
         name: checkout
         path: .
+    - name: Fix +x permission
+      run: find tools/ -type f -iname "*.sh" -exec chmod +x {} \;
     - name: Build redis
       run: tools/build.sh ${{ matrix.redis_version }} redis_server/bin
     - name: debug
