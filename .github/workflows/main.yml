@@ -32,7 +32,7 @@ jobs:
         - "cp38-cp38"
         - "cp39-cp39"
       redis_version:
-        - "5.0.9"
+        - "5.0.10"
         - "6.0.8"
   container:
     image: ${{ matrix.image }}
@@ -85,7 +85,7 @@ jobs:
   strategy:
     matrix:
       redis_version:
-        - "5.0.9"
+        - "5.0.10"
         - "6.0.8"
   steps:
     - name: Download checkout
